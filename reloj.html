@@ -1,0 +1,142 @@
+#Creado por Rubén Labrador junio
+<title>Reloj</title>
+<style>
+    body {
+        background-color: #111
+    }
+
+    canvas {
+        border: 4px solid #fff;
+        background: #111;
+        margin: 0 auto;
+        display: block
+    }
+</style>
+<canvas></canvas>
+
+<script>
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+    canvas.width = 600
+    canvas.height = 210
+    let a = [
+        [5, 0],
+        [105, 0],
+        [79, 26],
+        [31, 26]
+    ]
+    let b = [ 
+        [110, 5],
+        [110, 79],
+        [97, 92],
+        [84, 79],
+        [84, 31]
+    ]
+    let c = [ 
+        [18, 97],
+        [31, 84],
+        [79, 84],
+        [92, 97],
+        [79, 110],
+        [31, 110]
+    ]
+    let d = [   
+        [0, 5],
+        [0, 79],
+        [13, 92],
+        [26, 79],
+        [26, 31]
+    ]
+    let e = [
+        [0, 189],
+        [0, 115],
+        [13, 102],
+        [26, 117],
+        [26, 163]
+    ]
+    let f = [
+        [110, 189],
+        [110, 115],
+        [97, 102],
+        [84, 117],
+        [84, 163]
+    ]
+    let g = [
+        [5, 194],
+        [105, 194],
+        [79, 168],
+        [31, 168]
+    ]
+
+    let cero = [1,1,0,1,1,1,1]
+    let uno = [0,1,0,0,0,1,0]
+    let dos = [1,1,1,0,1,0,1]
+    let tres = [1,1,1,0,0,1,1]
+    let cuatro = [0,1,1,1,0,1,0]
+    let cinco = [1,0,1,1,0,1,1]
+    let seis = [1,0,1,1,1,1,1]
+    let siete = [1,1,0,0,0,1,0]
+    let ocho = [1,1,1,1,1,1,1]
+    let nueve = [1,1,1,1,0,1,0]
+    let numeros = [cero, uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve]
+    let segments = [a, b, c, d, e, f, g]
+    let contador = 610
+    function drawNumber(mask, xOffset, yOffset) {
+        ctx.beginPath()
+        ctx.fillStyle = 'red'
+        for ( x = 0; x < mask.length; x++){
+            if (mask[x]==1){
+                ctx.moveTo(segments[x][0][0] + xOffset, segments[x][0][1] + yOffset)
+        
+                for( i = 1; i < segments[x].length; i++){
+                    ctx.lineTo(segments[x][i][0] + xOffset,segments[x][i][1] + yOffset)
+                        
+                }
+
+            }
+        }
+       
+        ctx.fill()
+        ctx.closePath()
+    }
+    function drawDots(){
+        ctx.beginPath()
+        ctx.arc(300, 70, 10, 0, Math.PI * 2)
+        ctx.arc(300, 130, 10, 0, Math.PI * 2)
+        ctx.fillStyle = 'red'
+        ctx.fill()
+        ctx.closePath()
+    }
+   
+    function cleanCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+    }
+
+
+    function draw() {
+        cleanCanvas()
+        decMin = Math.floor(contador/600)
+        unMin = Math.floor(contador/60)%10
+        decSec = Math.floor((contador%60)/10)
+        unSec = (contador%60)%10
+        console.log(decMin)
+        drawNumber(numeros[decMin],10,10)
+        drawNumber(numeros[unMin],150,10)
+        drawDots()
+        drawNumber(numeros[decSec],340,10)
+        drawNumber(numeros[unSec],480,10)
+        window.requestAnimationFrame(draw)
+    }
+    function contar (){
+        if (contador > 0){
+            console.log(contador)
+            contador--
+            setTimeout(contar, 1000)
+        }
+    }
+    setTimeout(
+        contar
+    , 1000);
+    draw()
+
+</script>
